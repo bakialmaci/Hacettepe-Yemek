@@ -88,10 +88,23 @@
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:foregroundGravity="center">
+
+
+            <ImageView
+                android:id="@+id/food_image"
+                android:layout_width="fill_parent"
+                android:layout_height="220dp"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:contentDescription="@string/todo"
+                android:translationZ="1dp"
+                android:padding="10dp"
+                android:background="@android:color/black"
+                tools:ignore="UnusedAttribute"
+                tools:srcCompat="@tools:sample/avatars"
+                android:visibility="invisible"/>
 
 
             <ListView
@@ -103,19 +116,6 @@
                 android:background="@android:color/white">
             </ListView>
 
-            <ImageView
-                android:id="@+id/food_image"
-                android:layout_width="210dp"
-                android:layout_height="210dp"
-                android:contentDescription="@string/todo"
-                android:textAlignment="center"
-                android:translationZ="1dp"
-                android:layout_gravity="center"
-                android:padding="10dp"
-                android:background="@drawable/border_trans"
-                tools:ignore="UnusedAttribute"
-                tools:srcCompat="@tools:sample/avatars"
-                android:visibility="invisible"/>
 
             <Button
                 android:id="@+id/close_button"
@@ -124,9 +124,9 @@
                 android:text="X"
                 android:translationZ="10dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="85dp"
+                android:layout_marginLeft="125dp"
                 android:layout_marginBottom="85dp"
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:textSize="36dp"
                 android:fontFamily="sans-serif-thin"
                 android:textColor="@android:color/white"

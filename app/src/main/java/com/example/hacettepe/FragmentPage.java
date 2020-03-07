@@ -1,6 +1,7 @@
 package com.example.hacettepe;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -114,6 +115,7 @@ public class FragmentPage extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
 
                 boolean flag = false;
                 for(int k = 0; k<= jsonArray.length(); k++){
