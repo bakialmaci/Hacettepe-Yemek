@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@android:color/transparent">
+
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/todo"
+        android:padding="10dp"
+        android:translationZ="1dp"
+        android:background="@drawable/border_circle"
+        tools:ignore="UnusedAttribute"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="-50dp"
+        android:background="@drawable/border"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/hacettepe_university"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:text="Hacettepe Üniversitesi"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@android:color/black"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/yemek_listesi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Yemek Listesi"
+            android:fontFamily="sans-serif"
+            android:layout_marginBottom="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="14dp"
+            tools:ignore="HardcodedText,SpUsage"
+            tools:targetApi="jelly_bean" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="- . - . -"
+            android:fontFamily="sans-serif"
+            android:textColor="@android:color/black"
+            android:textSize="14dp"
+            tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
+
+        <TextView
+            android:id="@+id/day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="-"
+            android:fontFamily="sans-serif-black"
+            android:layout_marginBottom="14dp"
+            android:textColor="@android:color/black"
+            android:textSize="16dp"
+            tools:ignore="HardcodedText,SpUsage"
+            tools:targetApi="jelly_bean" />
+
+
+
+
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:foregroundGravity="center">
+
+
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@android:color/white">
+            </ListView>
+
+            <ImageView
+                android:id="@+id/food_image"
+                android:layout_width="210dp"
+                android:layout_height="210dp"
+                android:contentDescription="@string/todo"
+                android:textAlignment="center"
+                android:translationZ="1dp"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:background="@drawable/border_trans"
+                tools:ignore="UnusedAttribute"
+                tools:srcCompat="@tools:sample/avatars"
+                android:visibility="invisible"/>
+
+            <Button
+                android:id="@+id/close_button"
+                android:layout_height="72dp"
+                android:layout_width="40dp"
+                android:text="X"
+                android:translationZ="10dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="85dp"
+                android:layout_marginBottom="85dp"
+                android:visibility="visible"
+                android:textSize="36dp"
+                android:fontFamily="sans-serif-thin"
+                android:textColor="@android:color/white"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                tools:ignore="ButtonStyle,HardcodedText" />
+
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/calories">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/calories_text"
+                android:layout_marginLeft="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textSize="18dp"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@android:color/black"
+                android:text="1000">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="12dp"
+                android:textSize="14dp"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@android:color/black"
+                android:text="Kalori">
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Yemek"
+                android:layout_margin="1dp"
+                style="@style/Widget.AppCompat.Button.Colored"
+                tools:ignore="ButtonStyle,HardcodedText" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Kahvaltı"
+                android:layout_margin="1dp"
+                style="@style/Widget.AppCompat.Button.Colored"
+                tools:ignore="ButtonStyle,HardcodedText" />
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
