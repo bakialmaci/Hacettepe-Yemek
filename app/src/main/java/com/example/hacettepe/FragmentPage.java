@@ -38,6 +38,7 @@ public class FragmentPage extends Fragment {
     TextView dateText;
     TextView dateDayText;
     TextView calText;
+    TextView calText2;
     ListView listView;
     boolean yemek = true;
     boolean kahvalti = false;
@@ -61,19 +62,26 @@ public class FragmentPage extends Fragment {
         dateText = (TextView)view.findViewById(R.id.date);
         dateDayText = (TextView)view.findViewById(R.id.day);
         calText = (TextView)view.findViewById(R.id.calories_text);
+        calText2 = (TextView)view.findViewById(R.id.kalori);
         listView = (ListView)view.findViewById(R.id.listview);
 
         ImageView logo = (ImageView)view.findViewById(R.id.logo);
         final ImageView foodimage = (ImageView)view.findViewById(R.id.food_image);
         logo.setImageResource(R.drawable.logo2);
 
-        Button button_yemek = (Button) view.findViewById(R.id.button1);
-        Button button_kahvalti = (Button) view.findViewById(R.id.button2);
+        final ImageView calImg = (ImageView)view.findViewById(R.id.calories);
+
+
+        final Button button_yemek = (Button) view.findViewById(R.id.button1);
+        final Button button_kahvalti = (Button) view.findViewById(R.id.button2);
         final Button closebutton = (Button) view.findViewById(R.id.close_button);
 
         button_kahvalti.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                calText.setVisibility(View.INVISIBLE);
+                calImg.setVisibility(View.INVISIBLE);
+                calText2.setVisibility(View.INVISIBLE);
                 kahvalti = true;
                 yemek    = false;
                 Log.e("KAHVALTI","KAHVALTI");
@@ -84,6 +92,9 @@ public class FragmentPage extends Fragment {
         button_yemek.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                calText.setVisibility(View.VISIBLE);
+                calImg.setVisibility(View.VISIBLE);
+                calText2.setVisibility(View.VISIBLE);
                 kahvalti = false;
                 yemek    = true;
                 Log.e("YEMEK","YEMEK");
@@ -99,14 +110,32 @@ public class FragmentPage extends Fragment {
                 img.setVisibility(View.INVISIBLE);
                 close_button.setVisibility(View.INVISIBLE);
 
+//                listView.setVisibility(View.VISIBLE);
+//                dateDayText.setVisibility(View.VISIBLE);
+//                dateText.setVisibility(View.VISIBLE);
+//                button_kahvalti.setVisibility(View.VISIBLE);
+//                button_yemek.setVisibility(View.VISIBLE);
+//                calText.setVisibility(View.VISIBLE);
+//                calImg.setVisibility(View.VISIBLE);
+//                calText2.setVisibility(View.VISIBLE);
             }
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
                 foodimage.setVisibility(View.INVISIBLE);
                 closebutton.setVisibility(View.INVISIBLE);
+//                listView.setVisibility(View.INVISIBLE);
+//                dateDayText.setVisibility(View.INVISIBLE);
+//                dateText.setVisibility(View.INVISIBLE);
+//                button_kahvalti.setVisibility(View.INVISIBLE);
+//                button_yemek.setVisibility(View.INVISIBLE);
+//                calText.setVisibility(View.INVISIBLE);
+//                calImg.setVisibility(View.INVISIBLE);
+//                calText2.setVisibility(View.INVISIBLE);
+
                 JSONArray jsonArray = null;
                 try {
                     jsonArray = new JSONArray(MainActivity.example);
@@ -163,6 +192,15 @@ public class FragmentPage extends Fragment {
                     public void onSuccess() {
                         foodimage.setVisibility(View.VISIBLE);
                         closebutton.setVisibility(View.VISIBLE);
+
+//                        listView.setVisibility(View.INVISIBLE);
+//                        dateDayText.setVisibility(View.INVISIBLE);
+//                        dateText.setVisibility(View.INVISIBLE);
+//                        button_kahvalti.setVisibility(View.INVISIBLE);
+//                        button_yemek.setVisibility(View.INVISIBLE);
+//                        calText.setVisibility(View.INVISIBLE);
+//                        calImg.setVisibility(View.INVISIBLE);
+//                        calText2.setVisibility(View.INVISIBLE);
                         String selectedFromList = String.valueOf((listView.getItemAtPosition(position)));
                     }
 
@@ -200,10 +238,29 @@ public class FragmentPage extends Fragment {
             return result;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             try {
+
+                String[] months = {
+                        "",
+                        "Ocak",
+                        "Şubat",
+                        "Mart",
+                        "Nisan",
+                        "Mayıs",
+                        "Haziran",
+                        "Temmuz",
+                        "Ağustos",
+                        "Eylül",
+                        "Ekim",
+                        "Kasım",
+                        "Aralık",
+                };
+
+
                 Bundle bundle = getArguments();
                 assert bundle != null;
                 ArrayList<String> arrayList = new ArrayList<>();
@@ -211,8 +268,13 @@ public class FragmentPage extends Fragment {
                 int pagee = Integer.parseInt(Integer.toString(bundle.getInt("pageNumber")));
                 Log.e("onPostExecute", String.valueOf(pagee));
                 JSONObject object = jsonArray.getJSONObject(pagee);
-                dateText.setText(object.getString("date").substring(0,10));
+//                dateText.setText(object.getString("date").substring(0,10));
+
                 int dayPage = Integer.parseInt(object.getString("date").substring(8,10));
+                int get_month_name = Integer.parseInt(object.getString("date").substring(5,7));
+
+                dateText.setText(dayPage+" "+months[get_month_name]);
+
 
                 calText.setText(object.getString("cal"));
                     String[][] menu = {{

@@ -20,7 +20,7 @@
                 android:endColor="#FF9100"
                 android:type="linear" />
 
-<!--            <solid android:color="#E91E63" />-->
+            <!--            <solid android:color="#E91E63" />-->
             <size
                 android:height="200dip"
                 android:width="200dip" />
