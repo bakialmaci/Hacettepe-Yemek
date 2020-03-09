@@ -167,7 +167,7 @@ public class FragmentPage extends Fragment {
 
                                 if(foodObject.getString("name").equals(String.valueOf((listView.getItemAtPosition(position))))){
                                     Log.e("FOUND!!!","FOUND");
-                                    photoURL = "http://104.248.251.131/uploads/"+foodObject.getString("photo_url");                                    Log.e("FOUND!!!","FOUND");
+                                    photoURL = "http://104.248.251.131/"+foodObject.getString("photo_url");                                    Log.e("FOUND!!!","FOUND");
                                     Log.e("FOUND!!!",foodObject.getString("photo_url"));
 
                                     flag = true;

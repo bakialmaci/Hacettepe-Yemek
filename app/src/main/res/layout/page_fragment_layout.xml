@@ -57,29 +57,7 @@
             tools:ignore="HardcodedText,SpUsage"
             tools:targetApi="jelly_bean" />
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="- . - . -"
-            android:fontFamily="sans-serif"
-            android:textColor="@android:color/black"
-            android:textSize="14dp"
-            tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
 
-        <TextView
-            android:id="@+id/day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="-"
-            android:fontFamily="sans-serif-black"
-            android:layout_marginBottom="14dp"
-            android:textColor="@android:color/black"
-            android:textSize="16dp"
-            tools:ignore="HardcodedText,SpUsage"
-            tools:targetApi="jelly_bean" />
 
 
 
@@ -92,16 +70,42 @@
             android:foregroundGravity="center">
 
 
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="- . - . -"
+                android:fontFamily="sans-serif"
+                android:textColor="@android:color/black"
+                android:textSize="14dp"
+                tools:ignore="HardcodedText,SpUsage,UnusedAttribute" />
+
+            <TextView
+                android:id="@+id/day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="-"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-black"
+                android:layout_marginBottom="14dp"
+                android:textColor="@android:color/black"
+                android:textSize="16dp"
+                tools:ignore="HardcodedText,SpUsage"
+                tools:targetApi="jelly_bean" />
+
+
             <ImageView
                 android:id="@+id/food_image"
-                android:layout_width="fill_parent"
-                android:layout_height="220dp"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="0dp"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center"
                 android:contentDescription="@string/todo"
+                android:background="@drawable/border_trans"
                 android:translationZ="1dp"
-                android:padding="10dp"
-                android:background="@android:color/black"
                 tools:ignore="UnusedAttribute"
                 tools:srcCompat="@tools:sample/avatars"
                 android:visibility="invisible"/>
@@ -109,6 +113,7 @@
 
             <ListView
                 android:id="@+id/listview"
+                android:layout_marginTop="45dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -119,18 +124,19 @@
 
             <Button
                 android:id="@+id/close_button"
-                android:layout_height="72dp"
-                android:layout_width="40dp"
+                android:layout_height="34dp"
+                android:layout_width="34dp"
+                android:padding="0dp"
                 android:text="X"
                 android:translationZ="10dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="125dp"
-                android:layout_marginBottom="85dp"
+                android:layout_marginLeft="104dp"
+                android:layout_marginBottom="105dp"
                 android:visibility="invisible"
-                android:textSize="36dp"
-                android:fontFamily="sans-serif-thin"
+                android:textSize="18dp"
+                android:background="@android:color/holo_red_light"
                 android:textColor="@android:color/white"
-                style="@style/Widget.AppCompat.Button.Borderless"
+                android:fontFamily="sans-serif-black"
                 tools:ignore="ButtonStyle,HardcodedText" />
 
 

@@ -3,6 +3,9 @@ package com.example.hacettepe;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -111,9 +114,26 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public String doInBackground(Void... voids) {
+
+
+
+            boolean connected = false;
+            ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+            if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                //we are connected to a network
+                Log.e("conn","conn");
+                connected = true;
+            }
+            else
+                connected = false;
+
+
+
+
             load();
             Log.e("loadeq",foodStorage);
-            if (foodStorage == "no"){
+            if (foodStorage == "no" || connected){
                 try {
                     Log.e("Request12","Request Send!");
                     URL myurl = new URL(url);
