@@ -138,7 +138,8 @@ public class FragmentPage extends Fragment {
 
                 JSONArray jsonArray = null;
                 try {
-                    jsonArray = new JSONArray(MainActivity.example);
+
+                    jsonArray = new JSONArray(MainActivity.foodStorage);
 //                    Log.e("example taken",MainActivity.example);
 
                 } catch (JSONException e) {
@@ -223,7 +224,10 @@ public class FragmentPage extends Fragment {
     }
 
 
+    @SuppressLint("StaticFieldLeak")
     class jsonTask extends AsyncTask<Void,Void,String> {
+
+
 
         @Override
         protected void onPreExecute() {
@@ -232,9 +236,14 @@ public class FragmentPage extends Fragment {
 
         @Override
         protected String doInBackground(Void... voids) {
-            if(MainActivity.example != ""){
-                result = MainActivity.example;
+
+            if(MainActivity.foodStorage != null){
+                Log.e("Storage","YES");
+                result = MainActivity.foodStorage;
+            }else{
+                Log.e("Storage","NO");
             }
+
             return result;
         }
 

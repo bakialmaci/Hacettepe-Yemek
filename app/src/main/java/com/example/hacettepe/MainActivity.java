@@ -6,11 +6,15 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -23,17 +27,78 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String FILE_NAME = "foods.txt";
     String result = "";
     String url = "http://104.248.251.131/foods";
     public static String example = "";
     public static int counter = 0;
-
+    public static String foodStorage = "no";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new jsonTask().execute();
         setContentView(R.layout.main_activity);
+    }
+
+    public void save(String data) {
+
+        FileOutputStream fos = null;
+
+        try {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(data.getBytes());
+            Log.e("xd","xd");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    public String load() {
+        FileInputStream fis = null;
+
+        try {
+            fis = openFileInput(FILE_NAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+
+            while ((text = br.readLine()) != null) {
+//                    Log.e("append",text);
+                sb.append(text).append("\n");
+            }
+            foodStorage = sb.toString();
+//                ja = sb.
+            Log.e("sb.toString22", sb.toString());
+            return sb.toString();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return "no";
     }
 
 
@@ -46,32 +111,47 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public String doInBackground(Void... voids) {
-            try {
-                Log.e("Request","Request Send!");
-                URL myurl = new URL(url);
-                HttpURLConnection urlConnection = (HttpURLConnection)myurl.openConnection();
-                InputStreamReader streamReader = new InputStreamReader(urlConnection.getInputStream());
-                BufferedReader reader = new BufferedReader(streamReader);
-                StringBuilder builder = new StringBuilder();
-                String line;
-                while((line = reader.readLine()) != null){
-                    builder.append(line);
-                }
-                result = builder.toString();
+            load();
+            Log.e("loadeq",foodStorage);
+            if (foodStorage == "no"){
+                try {
+                    Log.e("Request12","Request Send!");
+                    URL myurl = new URL(url);
+                    HttpURLConnection urlConnection = (HttpURLConnection)myurl.openConnection();
+                    InputStreamReader streamReader = new InputStreamReader(urlConnection.getInputStream());
+                    BufferedReader reader = new BufferedReader(streamReader);
+                    StringBuilder builder = new StringBuilder();
+                    String line;
+                    while((line = reader.readLine()) != null){
+                        builder.append(line);
+                    }
+                    result = builder.toString();
 
-            } catch (MalformedURLException e) {
-                Log.e("MalformedURLException",e.toString());
-                e.printStackTrace();
-            } catch (IOException e) {
-                Log.e("IOException",e.toString());
-                e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    Log.e("MalformedURLException",e.toString());
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    Log.e("IOException",e.toString());
+                    e.printStackTrace();
+                }
+//                example = result;
+                save(result);
+                foodStorage = result;
+                Log.e("loadeq",foodStorage);
+            }else{
+//                Log.e("foodStorage",foodStorage);
+                Log.e("HTTP","http passed");
             }
-            example = result;
+
+            load();
+
 
             ArrayList<String> arrayList = new ArrayList<>();
             JSONArray jsonArray = null;
+            Log.e("WTF",load());
             try {
-                jsonArray = new JSONArray(example);
+                jsonArray = new JSONArray(load());
+                Log.e("sasa", String.valueOf(jsonArray));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
