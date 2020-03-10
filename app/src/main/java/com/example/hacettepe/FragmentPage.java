@@ -44,6 +44,7 @@ public class FragmentPage extends Fragment {
     ListView listView;
     boolean yemek = true;
     boolean kahvalti = false;
+    public  static boolean flag = false;
     android.widget.ImageView ImageView;
 
     @SuppressLint("SetTextI18n")
@@ -100,6 +101,7 @@ public class FragmentPage extends Fragment {
         button_yemek.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+//                button_yemek.setTextColor();
                 dateDayText.setVisibility(View.VISIBLE);
                 dateText.setVisibility(View.VISIBLE);
                 calText.setVisibility(View.VISIBLE);
@@ -175,14 +177,13 @@ public class FragmentPage extends Fragment {
                     e.printStackTrace();
                 }
 
+                photoURL = "http://104.248.251.131/"+"example.jpeg";
 
-                boolean flag = false;
                 for(int k = 0; k<= jsonArray.length(); k++){
 
                     if(flag){
                         break;
                     }
-
                     JSONObject object = null;
                     try {
                         object = jsonArray.getJSONObject(k);
@@ -194,14 +195,23 @@ public class FragmentPage extends Fragment {
 
                                 JSONObject foodObject = new JSONObject(jsonFoods.getString(f));
 
-                                if(foodObject.getString("name").equals(String.valueOf((listView.getItemAtPosition(position))))){
+
+                                if(foodObject.getString("name").equals(String.valueOf((listView.getItemAtPosition(position)))) && yemek){
 //                                    Log.e("FOUND!!!","FOUND");
-                                    photoURL = "http://104.248.251.131/"+foodObject.getString("photo_url");
+                                    if(foodObject.getString("photo_url").equals("example.jpeg")){
+                                        Log.e("NOT FOund","not found!!!");
+                                        photoURL = "http://104.248.251.131/"+"example.jpeg";
+                                    }else{
+                                        photoURL = "http://104.248.251.131/"+foodObject.getString("photo_url");
 //                                    Log.e("FOUND!!!","FOUND");
-//                                    Log.e("FOUND!!!",foodObject.getString("photo_url"));
+                                        Log.e("FOUND!!!",foodObject.getString("photo_url"));
+                                    }
+
 
                                     flag = true;
                                     break;
+                                }else{
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -216,23 +226,18 @@ public class FragmentPage extends Fragment {
 
 
                 }
+                flag = false;
 //                Log.e("photoURL",photoURL);
                 String food_url = photoURL;
                 Picasso.with(getActivity()).load(food_url).into(foodimage, new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {
-                        foodimage.setVisibility(View.VISIBLE);
-                        closebutton.setVisibility(View.VISIBLE);
+                        if(yemek){
+                            foodimage.setVisibility(View.VISIBLE);
+                            closebutton.setVisibility(View.VISIBLE);
+                            String selectedFromList = String.valueOf((listView.getItemAtPosition(position)));
+                        }
 
-//                        listView.setVisibility(View.INVISIBLE);
-//                        dateDayText.setVisibility(View.INVISIBLE);
-//                        dateText.setVisibility(View.INVISIBLE);
-//                        button_kahvalti.setVisibility(View.INVISIBLE);
-//                        button_yemek.setVisibility(View.INVISIBLE);
-//                        calText.setVisibility(View.INVISIBLE);
-//                        calImg.setVisibility(View.INVISIBLE);
-//                        calText2.setVisibility(View.INVISIBLE);
-                        String selectedFromList = String.valueOf((listView.getItemAtPosition(position)));
                     }
 
                     @Override
