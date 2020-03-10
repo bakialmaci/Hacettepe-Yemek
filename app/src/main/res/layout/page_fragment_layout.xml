@@ -58,6 +58,147 @@
             tools:targetApi="jelly_bean" />
 
 
+        <FrameLayout
+            android:id="@+id/saats"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:foregroundGravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Beytepe"
+                    android:textSize="16dp"
+                    android:fontFamily="sans-serif-black"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sabah: 8:00 - 9:15"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Öğlen: 11:30 - 14:00"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Akşam: 17:00 - 19:00"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Sıhhiye"
+                    android:textSize="16dp"
+                    android:fontFamily="sans-serif-black"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sabah: 8:00 - 9:15"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Öğlen: 11:30 - 13:30"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Akşam: 17:00 - 19:00"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Resmi tatiller ve Hafta sonu"
+                    android:textSize="16dp"
+                    android:fontFamily="sans-serif-black"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sabah: 9:00 - 10:00"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Öğlen: 12:00 - 13:30"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Akşam: 17:00 - 19:00"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black">
+                </TextView>
+
+
+
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+
 
 
 
@@ -67,6 +208,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
+            android:layout_marginTop="-300dp"
             android:foregroundGravity="center">
 
 
@@ -111,15 +253,16 @@
                 android:visibility="invisible"/>
 
 
-            <ListView
-                android:id="@+id/listview"
-                android:layout_marginTop="45dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@android:color/white">
-            </ListView>
+                <ListView
+                    android:id="@+id/listview"
+                    android:layout_marginTop="45dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@android:color/white">
+                </ListView>
+
 
 
             <Button
@@ -197,14 +340,22 @@
                 tools:ignore="ButtonStyle,HardcodedText" />
 
             <Button
-                android:id="@+id/button2"
+            android:id="@+id/button2"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Kahvaltı"
+            android:layout_margin="1dp"
+            style="@style/Widget.AppCompat.Button.Colored"
+            tools:ignore="ButtonStyle,HardcodedText" />
+
+            <Button
+                android:id="@+id/button3"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Kahvaltı"
+                android:text="Saatler"
                 android:layout_margin="1dp"
                 style="@style/Widget.AppCompat.Button.Colored"
                 tools:ignore="ButtonStyle,HardcodedText" />
-
 
 
         </LinearLayout>

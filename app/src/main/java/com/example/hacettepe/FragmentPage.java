@@ -1,6 +1,7 @@
 package com.example.hacettepe;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -64,6 +66,7 @@ public class FragmentPage extends Fragment {
         calText = (TextView)view.findViewById(R.id.calories_text);
         calText2 = (TextView)view.findViewById(R.id.kalori);
         listView = (ListView)view.findViewById(R.id.listview);
+        final FrameLayout fl_saats = (FrameLayout)view.findViewById(R.id.saats);
 
         ImageView logo = (ImageView)view.findViewById(R.id.logo);
         final ImageView foodimage = (ImageView)view.findViewById(R.id.food_image);
@@ -74,17 +77,22 @@ public class FragmentPage extends Fragment {
 
         final Button button_yemek = (Button) view.findViewById(R.id.button1);
         final Button button_kahvalti = (Button) view.findViewById(R.id.button2);
+        final Button button_saatler = (Button) view.findViewById(R.id.button3);
         final Button closebutton = (Button) view.findViewById(R.id.close_button);
 
         button_kahvalti.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                dateDayText.setVisibility(View.VISIBLE);
+                dateText.setVisibility(View.VISIBLE);
                 calText.setVisibility(View.INVISIBLE);
                 calImg.setVisibility(View.INVISIBLE);
                 calText2.setVisibility(View.INVISIBLE);
+                listView.setVisibility(View.VISIBLE);
+                fl_saats.setVisibility(View.INVISIBLE);
                 kahvalti = true;
                 yemek    = false;
-                Log.e("KAHVALTI","KAHVALTI");
+//                Log.e("KAHVALTI","KAHVALTI");
                 new FragmentPage.jsonTask().execute();
             }
         });
@@ -92,12 +100,33 @@ public class FragmentPage extends Fragment {
         button_yemek.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                dateDayText.setVisibility(View.VISIBLE);
+                dateText.setVisibility(View.VISIBLE);
                 calText.setVisibility(View.VISIBLE);
                 calImg.setVisibility(View.VISIBLE);
                 calText2.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.VISIBLE);
+                fl_saats.setVisibility(View.INVISIBLE);
                 kahvalti = false;
                 yemek    = true;
-                Log.e("YEMEK","YEMEK");
+//                Log.e("YEMEK","YEMEK");
+                new FragmentPage.jsonTask().execute();
+            }
+        });
+
+        button_saatler.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                dateDayText.setVisibility(View.INVISIBLE);
+                dateText.setVisibility(View.INVISIBLE);
+                calText.setVisibility(View.INVISIBLE);
+                calImg.setVisibility(View.INVISIBLE);
+                calText2.setVisibility(View.INVISIBLE);
+                listView.setVisibility(View.INVISIBLE);
+                fl_saats.setVisibility(View.VISIBLE);
+                kahvalti = false;
+                yemek    = true;
+//                Log.e("YEMEK","YEMEK");
                 new FragmentPage.jsonTask().execute();
             }
         });
@@ -166,9 +195,10 @@ public class FragmentPage extends Fragment {
                                 JSONObject foodObject = new JSONObject(jsonFoods.getString(f));
 
                                 if(foodObject.getString("name").equals(String.valueOf((listView.getItemAtPosition(position))))){
-                                    Log.e("FOUND!!!","FOUND");
-                                    photoURL = "http://104.248.251.131/"+foodObject.getString("photo_url");                                    Log.e("FOUND!!!","FOUND");
-                                    Log.e("FOUND!!!",foodObject.getString("photo_url"));
+//                                    Log.e("FOUND!!!","FOUND");
+                                    photoURL = "http://104.248.251.131/"+foodObject.getString("photo_url");
+//                                    Log.e("FOUND!!!","FOUND");
+//                                    Log.e("FOUND!!!",foodObject.getString("photo_url"));
 
                                     flag = true;
                                     break;
@@ -186,7 +216,7 @@ public class FragmentPage extends Fragment {
 
 
                 }
-                Log.e("photoURL",photoURL);
+//                Log.e("photoURL",photoURL);
                 String food_url = photoURL;
                 Picasso.with(getActivity()).load(food_url).into(foodimage, new com.squareup.picasso.Callback() {
                     @Override
@@ -238,10 +268,8 @@ public class FragmentPage extends Fragment {
         protected String doInBackground(Void... voids) {
 
             if(MainActivity.foodStorage != null){
-                Log.e("Storage","YES");
+//                Log.e("Storage","YES");
                 result = MainActivity.foodStorage;
-            }else{
-                Log.e("Storage","NO");
             }
 
             return result;
@@ -275,7 +303,7 @@ public class FragmentPage extends Fragment {
                 ArrayList<String> arrayList = new ArrayList<>();
                 JSONArray jsonArray = new JSONArray(s);
                 int pagee = Integer.parseInt(Integer.toString(bundle.getInt("pageNumber")));
-                Log.e("onPostExecute", String.valueOf(pagee));
+//                Log.e("onPostExecute", String.valueOf(pagee));
                 JSONObject object = jsonArray.getJSONObject(pagee);
 //                dateText.setText(object.getString("date").substring(0,10));
 
@@ -349,16 +377,18 @@ public class FragmentPage extends Fragment {
                             String foodName = (foodObject.getString("name"));
                             arrayList.add(foodName);
                         }
+                        arrayList.add(object.getString("veg"));
                     }else{
                         for(int index = 0; index < 7; index++){
                             if(daysOfWeek[index] == daysOfWeek[whichDay]){
                                 kahvaltiIndex = index;
-                                Log.e("takeIndexOfMenu", String.valueOf(kahvaltiIndex));
+//                                Log.e("takeIndexOfMenu", String.valueOf(kahvaltiIndex));
                             }
                         }
                         for(int food = 0; food < menu[kahvaltiIndex].length; food++) {
                             arrayList.add(menu[kahvaltiIndex][food]);
                         }
+
                     }
 
 

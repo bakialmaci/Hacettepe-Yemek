@@ -3,6 +3,7 @@ package com.example.hacettepe;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -23,6 +25,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public static String example = "";
     public static int counter = 0;
     public static String foodStorage = "no";
+    public  static boolean connected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
         FileOutputStream fos = null;
 
         try {
-            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos = openFileOutput(FILE_NAME,MODE_PRIVATE);
             fos.write(data.getBytes());
-            Log.e("xd","xd");
+//            Log.e("xd","xd");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -85,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             }
             foodStorage = sb.toString();
 //                ja = sb.
-            Log.e("sb.toString22", sb.toString());
+//            Log.e("sb.toString22", sb.toString());
             return sb.toString();
 
         } catch (FileNotFoundException e) {
@@ -105,37 +110,51 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
     class jsonTask extends AsyncTask<Void,Void,String> {
 
         @Override
         protected   void onPreExecute() {
             super.onPreExecute();
+
+            ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+            if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                //we are connected to a network
+//                Log.e("conn","conn");
+                connected = true;
+            }
+            else
+                connected = false;
+
+            if(!connected){
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("İnternet Bağlantın Bulunamadı")
+                        .setMessage("Fakat yine de yemek listesini sorunsuz bir şekilde görebilirsin.")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+            }
+
         }
 
         @Override
         public String doInBackground(Void... voids) {
 
 
+            Calendar c = Calendar.getInstance();
+            int dayOfMonth2 = c.get(Calendar.DAY_OF_MONTH);
 
-            boolean connected = false;
-            ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-            if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-                //we are connected to a network
-                Log.e("conn","conn");
-                connected = true;
-            }
-            else
-                connected = false;
-
-
+            File file = new File(String.valueOf(getFileStreamPath(FILE_NAME)));
+            Date lastModDate = new Date(file.lastModified());
+            int lastModDateInt = Integer.parseInt(lastModDate.toString().substring(8,10));
 
 
             load();
-            Log.e("loadeq",foodStorage);
-            if (foodStorage == "no" || connected){
+//            Log.e("loadeq",foodStorage);
+            if ((foodStorage == "no" || connected) && (dayOfMonth2 - lastModDateInt) >= 5){
                 try {
-                    Log.e("Request12","Request Send!");
+//                    Log.e("Request12","Request Send!");
                     URL myurl = new URL(url);
                     HttpURLConnection urlConnection = (HttpURLConnection)myurl.openConnection();
                     InputStreamReader streamReader = new InputStreamReader(urlConnection.getInputStream());
@@ -157,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 //                example = result;
                 save(result);
                 foodStorage = result;
-                Log.e("loadeq",foodStorage);
+//                Log.e("loadeq",foodStorage);
             }else{
 //                Log.e("foodStorage",foodStorage);
                 Log.e("HTTP","http passed");
@@ -168,10 +187,10 @@ public class MainActivity extends AppCompatActivity {
 
             ArrayList<String> arrayList = new ArrayList<>();
             JSONArray jsonArray = null;
-            Log.e("WTF",load());
+//            Log.e("WTF",load());
             try {
                 jsonArray = new JSONArray(load());
-                Log.e("sasa", String.valueOf(jsonArray));
+//                Log.e("sasa", String.valueOf(jsonArray));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -190,12 +209,12 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Calendar c = Calendar.getInstance();
+//                Calendar c = Calendar.getInstance();
                 int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
-                Log.e("darOfMonth", String.valueOf(dayOfMonth));
+//                Log.e("darOfMonth", String.valueOf(dayOfMonth));
                 if (dayOfMonth == dayPage){
-                    Log.e("paired","Dates Paired");
-                    Log.e("counter", String.valueOf(counter));
+//                    Log.e("paired","Dates Paired");
+//                    Log.e("counter", String.valueOf(counter));
                     break;
                 }else{
                     counter++;
