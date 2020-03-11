@@ -1,8 +1,6 @@
 package com.example.hacettepe;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,12 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.TypedArrayUtils;
 import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
@@ -29,7 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
 public class FragmentPage extends Fragment {
@@ -68,8 +65,10 @@ public class FragmentPage extends Fragment {
         calText2 = (TextView)view.findViewById(R.id.kalori);
         listView = (ListView)view.findViewById(R.id.listview);
         final FrameLayout fl_saats = (FrameLayout)view.findViewById(R.id.saats);
+        final LinearLayout l1 = (LinearLayout)view.findViewById(R.id.foreground1);
+        final LinearLayout l2 = (LinearLayout)view.findViewById(R.id.general);
 
-        ImageView logo = (ImageView)view.findViewById(R.id.logo);
+        final ImageView logo = (ImageView)view.findViewById(R.id.logo);
         final ImageView foodimage = (ImageView)view.findViewById(R.id.food_image);
         logo.setImageResource(R.drawable.logo2);
 
@@ -133,22 +132,52 @@ public class FragmentPage extends Fragment {
             }
         });
 
+
+        foodimage.setOnClickListener(new View.OnClickListener() {
+
+             @Override
+                 public void onClick(View v) {
+                 ImageView img=(ImageView)view.findViewById(R.id.food_image);
+                 Button close_button = (Button) view.findViewById(R.id.close_button);
+                 l1.setBackgroundDrawable(getResources().getDrawable(R.drawable.border));
+                 listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.white_bg));
+                 l2.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg6));
+
+
+                 button_yemek.setVisibility(View.VISIBLE);
+                 button_kahvalti.setVisibility(View.VISIBLE);
+                 button_saatler.setVisibility(View.VISIBLE);
+                 calImg.setVisibility(View.VISIBLE);
+                 logo.setVisibility(View.VISIBLE);
+                 listView.setEnabled(true);
+
+
+                 img.setVisibility(View.INVISIBLE);
+                 close_button.setVisibility(View.INVISIBLE);
+                 }
+             }
+        );
+
         closebutton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 ImageView img=(ImageView)view.findViewById(R.id.food_image);
                 Button close_button = (Button) view.findViewById(R.id.close_button);
+                l1.setBackgroundDrawable(getResources().getDrawable(R.drawable.border));
+                listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.white_bg));
+                l2.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg6));
+
+
+                button_yemek.setVisibility(View.VISIBLE);
+                button_kahvalti.setVisibility(View.VISIBLE);
+                button_saatler.setVisibility(View.VISIBLE);
+                calImg.setVisibility(View.VISIBLE);
+                logo.setVisibility(View.VISIBLE);
+
+
                 img.setVisibility(View.INVISIBLE);
                 close_button.setVisibility(View.INVISIBLE);
 
-//                listView.setVisibility(View.VISIBLE);
-//                dateDayText.setVisibility(View.VISIBLE);
-//                dateText.setVisibility(View.VISIBLE);
-//                button_kahvalti.setVisibility(View.VISIBLE);
-//                button_yemek.setVisibility(View.VISIBLE);
-//                calText.setVisibility(View.VISIBLE);
-//                calImg.setVisibility(View.VISIBLE);
-//                calText2.setVisibility(View.VISIBLE);
             }
         });
 
@@ -158,14 +187,15 @@ public class FragmentPage extends Fragment {
 
                 foodimage.setVisibility(View.INVISIBLE);
                 closebutton.setVisibility(View.INVISIBLE);
-//                listView.setVisibility(View.INVISIBLE);
-//                dateDayText.setVisibility(View.INVISIBLE);
-//                dateText.setVisibility(View.INVISIBLE);
-//                button_kahvalti.setVisibility(View.INVISIBLE);
-//                button_yemek.setVisibility(View.INVISIBLE);
-//                calText.setVisibility(View.INVISIBLE);
-//                calImg.setVisibility(View.INVISIBLE);
-//                calText2.setVisibility(View.INVISIBLE);
+                listView.setEnabled(true);
+                button_yemek.setVisibility(View.VISIBLE);
+                button_kahvalti.setVisibility(View.VISIBLE);
+                button_saatler.setVisibility(View.VISIBLE);
+                calImg.setVisibility(View.VISIBLE);
+                logo.setVisibility(View.VISIBLE);
+                l1.setBackgroundDrawable(getResources().getDrawable(R.drawable.border));
+                listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.white_bg));
+                l2.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg6));
 
                 JSONArray jsonArray = null;
                 try {
@@ -233,8 +263,20 @@ public class FragmentPage extends Fragment {
                     @Override
                     public void onSuccess() {
                         if(yemek){
+                            l1.setBackgroundDrawable(getResources().getDrawable(R.drawable.black_bg));
+                            listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.black_bg));
+
+                            button_yemek.setVisibility(View.INVISIBLE);
+                            button_kahvalti.setVisibility(View.INVISIBLE);
+                            button_saatler.setVisibility(View.INVISIBLE);
+                            calImg.setVisibility(View.INVISIBLE);
+                            logo.setVisibility(View.INVISIBLE);
+                            l2.setBackgroundDrawable(getResources().getDrawable(R.drawable.black_bg));
+                            listView.setEnabled(false);
+
+
                             foodimage.setVisibility(View.VISIBLE);
-                            closebutton.setVisibility(View.VISIBLE);
+//                            closebutton.setVisibility(View.VISIBLE);
                             String selectedFromList = String.valueOf((listView.getItemAtPosition(position)));
                         }
 
