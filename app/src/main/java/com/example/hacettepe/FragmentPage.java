@@ -1,6 +1,8 @@
 package com.example.hacettepe;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,12 +14,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.TypedArrayUtils;
 import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
@@ -27,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class FragmentPage extends Fragment {
@@ -54,35 +58,37 @@ public class FragmentPage extends Fragment {
         assert bundle != null;
         int pageNumber = bundle.getInt("pageNumber");
         view = inflater.inflate(R.layout.page_fragment_layout,container,false);
-        TextView textView = (TextView)view.findViewById(R.id.day);
+        TextView textView = view.findViewById(R.id.day);
 //        textView.setText(Integer.toString(pageNumber));
 
 
-        textView = (TextView)view.findViewById(R.id.text);
-        dateText = (TextView)view.findViewById(R.id.date);
-        dateDayText = (TextView)view.findViewById(R.id.day);
-        calText = (TextView)view.findViewById(R.id.calories_text);
-        calText2 = (TextView)view.findViewById(R.id.kalori);
-        listView = (ListView)view.findViewById(R.id.listview);
-        final FrameLayout fl_saats = (FrameLayout)view.findViewById(R.id.saats);
-        final LinearLayout l1 = (LinearLayout)view.findViewById(R.id.foreground1);
-        final LinearLayout l2 = (LinearLayout)view.findViewById(R.id.general);
+        textView = view.findViewById(R.id.text);
+        dateText = view.findViewById(R.id.date);
+        dateDayText = view.findViewById(R.id.day);
+        calText = view.findViewById(R.id.calories_text);
+        calText2 = view.findViewById(R.id.kalori);
+        listView = view.findViewById(R.id.listview);
+        final FrameLayout fl_saats = view.findViewById(R.id.saats);
 
-        final ImageView logo = (ImageView)view.findViewById(R.id.logo);
-        final ImageView foodimage = (ImageView)view.findViewById(R.id.food_image);
+        ImageView logo = view.findViewById(R.id.logo);
+        final ImageView foodimage = view.findViewById(R.id.food_image);
         logo.setImageResource(R.drawable.logo2);
 
-        final ImageView calImg = (ImageView)view.findViewById(R.id.calories);
+        final ImageView calImg = view.findViewById(R.id.calories);
+        final ProgressBar loading = view.findViewById(R.id.progressbar);
 
 
-        final Button button_yemek = (Button) view.findViewById(R.id.button1);
-        final Button button_kahvalti = (Button) view.findViewById(R.id.button2);
-        final Button button_saatler = (Button) view.findViewById(R.id.button3);
-        final Button closebutton = (Button) view.findViewById(R.id.close_button);
+
+        final Button button_yemek = view.findViewById(R.id.button1);
+        final Button button_kahvalti = view.findViewById(R.id.button2);
+        final Button button_saatler = view.findViewById(R.id.button3);
+        final Button closebutton = view.findViewById(R.id.close_button);
 
         button_kahvalti.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                foodimage.setVisibility(View.INVISIBLE);
+                closebutton.setVisibility(View.INVISIBLE);
                 dateDayText.setVisibility(View.VISIBLE);
                 dateText.setVisibility(View.VISIBLE);
                 calText.setVisibility(View.INVISIBLE);
@@ -100,6 +106,9 @@ public class FragmentPage extends Fragment {
         button_yemek.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                closebutton.setVisibility(View.INVISIBLE);
+
+                foodimage.setVisibility(View.INVISIBLE);
 //                button_yemek.setTextColor();
                 dateDayText.setVisibility(View.VISIBLE);
                 dateText.setVisibility(View.VISIBLE);
@@ -118,6 +127,9 @@ public class FragmentPage extends Fragment {
         button_saatler.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                closebutton.setVisibility(View.INVISIBLE);
+
+                foodimage.setVisibility(View.INVISIBLE);
                 dateDayText.setVisibility(View.INVISIBLE);
                 dateText.setVisibility(View.INVISIBLE);
                 calText.setVisibility(View.INVISIBLE);
@@ -132,75 +144,52 @@ public class FragmentPage extends Fragment {
             }
         });
 
-
-        foodimage.setOnClickListener(new View.OnClickListener() {
-
-             @Override
-                 public void onClick(View v) {
-                 ImageView img=(ImageView)view.findViewById(R.id.food_image);
-                 Button close_button = (Button) view.findViewById(R.id.close_button);
-                 l1.setBackgroundDrawable(getResources().getDrawable(R.drawable.border));
-                 listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.white_bg));
-                 l2.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg6));
-
-
-                 button_yemek.setVisibility(View.VISIBLE);
-                 button_kahvalti.setVisibility(View.VISIBLE);
-                 button_saatler.setVisibility(View.VISIBLE);
-                 calImg.setVisibility(View.VISIBLE);
-                 logo.setVisibility(View.VISIBLE);
-                 listView.setEnabled(true);
-
-
-                 img.setVisibility(View.INVISIBLE);
-                 close_button.setVisibility(View.INVISIBLE);
-                 }
-             }
-        );
-
         closebutton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                ImageView img=(ImageView)view.findViewById(R.id.food_image);
-                Button close_button = (Button) view.findViewById(R.id.close_button);
-                l1.setBackgroundDrawable(getResources().getDrawable(R.drawable.border));
-                listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.white_bg));
-                l2.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg6));
-
-
-                button_yemek.setVisibility(View.VISIBLE);
-                button_kahvalti.setVisibility(View.VISIBLE);
-                button_saatler.setVisibility(View.VISIBLE);
-                calImg.setVisibility(View.VISIBLE);
-                logo.setVisibility(View.VISIBLE);
-
-
+                ImageView img= view.findViewById(R.id.food_image);
+                Button close_button = view.findViewById(R.id.close_button);
                 img.setVisibility(View.INVISIBLE);
                 close_button.setVisibility(View.INVISIBLE);
 
+//                listView.setVisibility(View.VISIBLE);
+//                dateDayText.setVisibility(View.VISIBLE);
+//                dateText.setVisibility(View.VISIBLE);
+//                button_kahvalti.setVisibility(View.VISIBLE);
+//                button_yemek.setVisibility(View.VISIBLE);
+//                calText.setVisibility(View.VISIBLE);
+//                calImg.setVisibility(View.VISIBLE);
+//                calText2.setVisibility(View.VISIBLE);
             }
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
+                loading.setVisibility(View.VISIBLE);
                 foodimage.setVisibility(View.INVISIBLE);
                 closebutton.setVisibility(View.INVISIBLE);
-                listView.setEnabled(true);
-                button_yemek.setVisibility(View.VISIBLE);
-                button_kahvalti.setVisibility(View.VISIBLE);
-                button_saatler.setVisibility(View.VISIBLE);
-                calImg.setVisibility(View.VISIBLE);
-                logo.setVisibility(View.VISIBLE);
-                l1.setBackgroundDrawable(getResources().getDrawable(R.drawable.border));
-                listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.white_bg));
-                l2.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg6));
+//                listView.setVisibility(View.INVISIBLE);
+//                dateDayText.setVisibility(View.INVISIBLE);
+//                dateText.setVisibility(View.INVISIBLE);
+//                button_kahvalti.setVisibility(View.INVISIBLE);
+//                button_yemek.setVisibility(View.INVISIBLE);
+//                calText.setVisibility(View.INVISIBLE);
+//                calImg.setVisibility(View.INVISIBLE);
+//                calText2.setVisibility(View.INVISIBLE);
+
+
 
                 JSONArray jsonArray = null;
                 try {
 
                     jsonArray = new JSONArray(MainActivity.foodStorage);
+                    int get_page_date = Integer.parseInt(String.valueOf(dateText.getText()).substring(0,2));
+                    Log.e("dateText", String.valueOf(get_page_date));
+                    JSONObject obje = null;
+                    obje = jsonArray.getJSONObject(0);
+                    int intFirstDate = Integer.parseInt(obje.getString("date").substring(8,10));
+                    Log.e("dateTextStorage", String.valueOf(intFirstDate));
 //                    Log.e("example taken",MainActivity.example);
 
                 } catch (JSONException e) {
@@ -209,14 +198,11 @@ public class FragmentPage extends Fragment {
 
                 photoURL = "http://104.248.251.131/"+"example.jpeg";
 
-                for(int k = 0; k<= jsonArray.length(); k++){
 
-                    if(flag){
-                        break;
-                    }
                     JSONObject object = null;
                     try {
-                        object = jsonArray.getJSONObject(k);
+                        int calculate = Integer.parseInt(String.valueOf(dateText.getText()).substring(0,2)) - Integer.parseInt(jsonArray.getJSONObject(0).getString("date").substring(8,10));
+                        object = jsonArray.getJSONObject(calculate);
 //                        Log.e("objects", String.valueOf(object));
                         JSONArray jsonFoods  = object.getJSONArray("foods");
                         for (int f = 0; f < jsonFoods.length(); f++){
@@ -226,7 +212,7 @@ public class FragmentPage extends Fragment {
                                 JSONObject foodObject = new JSONObject(jsonFoods.getString(f));
 
 
-                                if(foodObject.getString("name").equals(String.valueOf((listView.getItemAtPosition(position)))) && yemek){
+                                if(foodObject.getString("name").equals(String.valueOf((listView.getItemAtPosition(position)))) && yemek && !foodObject.getString("photo_url").equals("example.jpeg")){
 //                                    Log.e("FOUND!!!","FOUND");
                                     if(foodObject.getString("photo_url").equals("example.jpeg")){
                                         Log.e("NOT FOund","not found!!!");
@@ -249,13 +235,16 @@ public class FragmentPage extends Fragment {
 
                         }
 
+                        if(!flag){
+                            loading.setVisibility(View.INVISIBLE);
+                        }
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
 
-                }
                 flag = false;
 //                Log.e("photoURL",photoURL);
                 String food_url = photoURL;
@@ -263,20 +252,9 @@ public class FragmentPage extends Fragment {
                     @Override
                     public void onSuccess() {
                         if(yemek){
-                            l1.setBackgroundDrawable(getResources().getDrawable(R.drawable.black_bg));
-                            listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.black_bg));
-
-                            button_yemek.setVisibility(View.INVISIBLE);
-                            button_kahvalti.setVisibility(View.INVISIBLE);
-                            button_saatler.setVisibility(View.INVISIBLE);
-                            calImg.setVisibility(View.INVISIBLE);
-                            logo.setVisibility(View.INVISIBLE);
-                            l2.setBackgroundDrawable(getResources().getDrawable(R.drawable.black_bg));
-                            listView.setEnabled(false);
-
-
+                            loading.setVisibility(View.INVISIBLE);
                             foodimage.setVisibility(View.VISIBLE);
-//                            closebutton.setVisibility(View.VISIBLE);
+                            closebutton.setVisibility(View.VISIBLE);
                             String selectedFromList = String.valueOf((listView.getItemAtPosition(position)));
                         }
 
@@ -292,7 +270,7 @@ public class FragmentPage extends Fragment {
             }
         });
 
-        ImageView calories = (ImageView)view.findViewById(R.id.calories);
+        ImageView calories = view.findViewById(R.id.calories);
         calories.setImageResource(R.drawable.cal2);
 
 
@@ -354,89 +332,89 @@ public class FragmentPage extends Fragment {
                 JSONObject object = jsonArray.getJSONObject(pagee);
 //                dateText.setText(object.getString("date").substring(0,10));
 
-                int dayPage = Integer.parseInt(object.getString("date").substring(8,10));
+                String dayPage = object.getString("date").substring(8,10);
                 int get_month_name = Integer.parseInt(object.getString("date").substring(5,7));
 
                 dateText.setText(dayPage+" "+months[get_month_name]);
 
 
                 calText.setText(object.getString("cal"));
-                    String[][] menu = {{
-                            "Çay, Soslu Patates Kızartması",
-                            "Haşlanmış Yumurta Beyaz Peynir",
-                            "Siyah Zeytin, Tahin Pekmez",
-                            "Domates-Biber, Ekmek(50 gr)"
-                    },{
-                            "Çay, Peynirli Rulo Börek",
-                            "Haşlanmış Yumurta, Tereyağ-Bal",
-                            "Poşet Beyaz Peynir, Yeşil Zeytin",
-                            "Domates-Salatalık, Ekmek (50 gr)"
-                    },{
-                            "Çay ,Kek, Haşlanmış Yumurta",
-                            "Üçgen Peynir, Siyah Zeytin",
-                            "Tereyağ-Reçel, Domates-Biber",
-                            "Ekmek (50 gr)"
-                    },{
-                            "Çay, Simit, Haşlanmış Yumurta",
-                            "Kaşar Peynir, Yeşil Zeytin",
-                            "Fındık Ezmesi, Domates-Salatalık",
-                            "Ekmek (50 gr)"
-                    },{
-                            "Çay, Patatesli Rulo Börek",
-                            "Peynirli Yumurta,Beyaz Peynir",
-                            "Tereyağ-Bal, Domates-Biber",
-                            "Ekmek (50 gr)"
+                String[][] menu = {{
+                        "Çay, Soslu Patates Kızartması",
+                        "Haşlanmış Yumurta Beyaz Peynir",
+                        "Siyah Zeytin, Tahin Pekmez",
+                        "Domates-Biber, Ekmek(50 gr)"
+                },{
+                        "Çay, Peynirli Rulo Börek",
+                        "Haşlanmış Yumurta, Tereyağ-Bal",
+                        "Poşet Beyaz Peynir, Yeşil Zeytin",
+                        "Domates-Salatalık, Ekmek (50 gr)"
+                },{
+                        "Çay ,Kek, Haşlanmış Yumurta",
+                        "Üçgen Peynir, Siyah Zeytin",
+                        "Tereyağ-Reçel, Domates-Biber",
+                        "Ekmek (50 gr)"
+                },{
+                        "Çay, Simit, Haşlanmış Yumurta",
+                        "Kaşar Peynir, Yeşil Zeytin",
+                        "Fındık Ezmesi, Domates-Salatalık",
+                        "Ekmek (50 gr)"
+                },{
+                        "Çay, Patatesli Rulo Börek",
+                        "Peynirli Yumurta,Beyaz Peynir",
+                        "Tereyağ-Bal, Domates-Biber",
+                        "Ekmek (50 gr)"
 
-                    },{
-                            "Çay, Sade Poğaça, Haşlanmış Yumurta",
-                            "Üçgen Peynir, Siyah Zeytin",
-                            "Tereyağ-Reçel, Domates-Salatalık",
-                            "Ekmek ( 50 gr)"
-                    },{
-                            "Çay, Simit, Haşlanmış Yumurta",
-                            "Kaşar Peynir, Yeşil Zeytin",
-                            "Tahin Pekmez, Domates-Biber",
-                            "Ekmek (50 gr)"
-                    }};
+                },{
+                        "Çay, Sade Poğaça, Haşlanmış Yumurta",
+                        "Üçgen Peynir, Siyah Zeytin",
+                        "Tereyağ-Reçel, Domates-Salatalık",
+                        "Ekmek ( 50 gr)"
+                },{
+                        "Çay, Simit, Haşlanmış Yumurta",
+                        "Kaşar Peynir, Yeşil Zeytin",
+                        "Tahin Pekmez, Domates-Biber",
+                        "Ekmek (50 gr)"
+                }};
 
-                    String[] daysOfWeek = {
-                            "Pazartesi",
-                            "Salı",
-                            "Çarşamba",
-                            "Perşembe",
-                            "Cuma",
-                            "Cumartesi",
-                            "Pazar",
-                    };
+                String[] daysOfWeek = {
+                        "Pazartesi",
+                        "Salı",
+                        "Çarşamba",
+                        "Perşembe",
+                        "Cuma",
+                        "Cumartesi",
+                        "Pazar",
+                };
 
-                    int kahvaltiIndex = 0;
+                int kahvaltiIndex = 0;
 
-                    Calendar c = Calendar.getInstance();
-                    int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+                Calendar c = Calendar.getInstance();
+                int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+                int dayPageInt = Integer.parseInt(dayPage);
+                int whichDay = (dayPageInt+5)%7;
+                dateDayText.setText(daysOfWeek[whichDay]);
 
-                    int whichDay = (dayPage+5)%7;
-                    dateDayText.setText(daysOfWeek[whichDay]);
-
-                    if (yemek){
-                        JSONArray jsonFoods  = object.getJSONArray("foods");
-                        for(int food = 0; food < jsonFoods.length(); food++){
-                            JSONObject foodObject = new JSONObject(jsonFoods.getString(food));
-                            String foodName = (foodObject.getString("name"));
-                            arrayList.add(foodName);
-                        }
-                        arrayList.add(object.getString("veg"));
-                    }else{
-                        for(int index = 0; index < 7; index++){
-                            if(daysOfWeek[index] == daysOfWeek[whichDay]){
-                                kahvaltiIndex = index;
-//                                Log.e("takeIndexOfMenu", String.valueOf(kahvaltiIndex));
-                            }
-                        }
-                        for(int food = 0; food < menu[kahvaltiIndex].length; food++) {
-                            arrayList.add(menu[kahvaltiIndex][food]);
-                        }
-
+                if (yemek){
+                    JSONArray jsonFoods  = object.getJSONArray("foods");
+                    for(int food = 0; food < jsonFoods.length(); food++){
+                        JSONObject foodObject = new JSONObject(jsonFoods.getString(food));
+                        String foodName = (foodObject.getString("name"));
+                        arrayList.add(foodName);
                     }
+                    arrayList.add("*"+object.getString("veg"));
+                }else{
+                    for(int index = 0; index < 7; index++){
+                        if(daysOfWeek[index] == daysOfWeek[whichDay]){
+                            kahvaltiIndex = index;
+//                                Log.e("takeIndexOfMenu", String.valueOf(kahvaltiIndex));
+                        }
+                    }
+                    for(int food = 0; food < menu[kahvaltiIndex].length; food++) {
+                        arrayList.add(menu[kahvaltiIndex][food]);
+                    }
+
+                }
 
 
                 ArrayAdapter arrayAdapter  = new ArrayAdapter(getActivity(),R.layout.textcenter,R.id.food_name,arrayList);

@@ -3,6 +3,7 @@ package com.example.hacettepe;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             else
                 connected = false;
 
-            if(!connected){
+            if(!connected && !foodStorage.equals("no")){
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("İnternet Bağlantın Bulunamadı")
                         .setMessage("Fakat yine de yemek listesini sorunsuz bir şekilde görebilirsin.")
@@ -136,8 +137,19 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
 
+//            if(!connected && foodStorage.equals("no")){
+//                new AlertDialog.Builder(MainActivity.this)
+//                        .setTitle("Yemek Verisi Çekilemedi")
+//                        .setMessage("Uygulamanın yemek verisini yüklemesi ya da güncellemesi gerek. Bunu için internete bağlantınız olması gerek.")
+//                        .setPositiveButton(android.R.string.ok, null)
+//                        .show();
+//            }
+
+
+
         }
 
+        @SuppressLint("WrongThread")
         @Override
         public String doInBackground(Void... voids) {
 
@@ -152,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
             load();
 //            Log.e("loadeq",foodStorage);
-            if ((foodStorage == "no" || connected) && (dayOfMonth2 - lastModDateInt) >= 5){
+            if ((foodStorage == "no" || connected) && (dayOfMonth2 - lastModDateInt) >= 1){
                 try {
 //                    Log.e("Request12","Request Send!");
                     URL myurl = new URL(url);
